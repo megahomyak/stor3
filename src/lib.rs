@@ -100,4 +100,21 @@ If I split the entire process into fallible operations and keep track what OP I'
 In reality, if the only atomicity I have is writing just one bit, then I have to get creative for bigger atomicity (such as writing whole pointers: it'll probably make sense to have a buffer of what bits were written)
 
 I feel like I'm missing something and this whole idea is worthless and won't be doable with the tools that UNIX gives me
+
+=== WHAT IF: JUST LOGGING *LITERALLY EVERYTHING* I WANT TO DO ===
+*/
+
+/*
+ANOTHER TAKE: WRITING LIKE I WILL NOT BE INTERRUPTED
+
+`".db" is just a file object`
+alloc(ctx) -> *node {
+    let vacant = ctx.db.read(VACANT_OFFSET)
+    if vacant == NULL {
+        return ctx.db.seek(0, from=.END)
+    } else {
+        ctx.db.write(VACANT_OFFSET, ctx.db.read(vacant))
+        return vacant
+    }
+}
 */
